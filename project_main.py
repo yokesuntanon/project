@@ -6,6 +6,7 @@ LARGEFONT = ("News Gothic", 15)
 MEDIUMFONT = ("News Gothic", 13)
 SMALLFONT = ("News Gothic", 10)
 
+# Define the variables to calculate
 class Data:
     salary = 0
     bonus = 0
@@ -76,10 +77,12 @@ class CommonFrame(tk.Frame):
         step_label = tk.Label(self, text=title, font=LARGEFONT, fg="black")
         step_label.place(x=30, y=80)
 
+# Page Income
 class Income(CommonFrame):
 
     def __init__(self, parent, controller):
-        labels = [("light blue", "white") if i == 0 else ("gray", "white") for i in range(6)]
+
+        labels = [("light blue", "white") if i == 0 else ("gray", "white") for i in range(6)]  # Change the color of the step icon
         super().__init__(parent, controller, labels, "Income")
 
         ttk.Label(self, text="Salary (Bath)", font=MEDIUMFONT).place(x=270, y=135)
@@ -101,6 +104,7 @@ class Income(CommonFrame):
         Data.bonus = int(self.bonus_entry.get())
         Data.other_income = int(self.other_incomes_entry.get())
 
+# Page Exemption
 class Ex(CommonFrame):
 
     def __init__(self, parent, controller):
@@ -135,10 +139,7 @@ class Ex(CommonFrame):
             # Dropdown menu options
             new_options = ["No Exemption", "Father Exemption", "Mother Exemption", "Father and Mother Exemption"]
 
-            # datatype of menu text
             new_clicked = tk.StringVar()
-
-            # initial menu text
             new_clicked.set(new_options[0])
 
             # Create Dropdown menu
@@ -156,10 +157,7 @@ class Ex(CommonFrame):
             # Dropdown menu options
             new_options = ["No", "Yes"]
 
-            # datatype of menu text
             new_clicked = tk.StringVar()
-
-            # initial menu text
             new_clicked.set(new_options[0])
 
             # Create Dropdown menu
@@ -177,10 +175,7 @@ class Ex(CommonFrame):
             # Dropdown menu options
             new_options = ["0", "1", "2", "3"]
 
-            # datatype of menu text
             new_clicked = tk.StringVar()
-
-            # initial menu text
             new_clicked.set(new_options[0])
 
             # Create Dropdown menu
@@ -205,7 +200,7 @@ class Ex(CommonFrame):
                 if widget.winfo_y() > 120 and widget.winfo_y() < 450: 
                     widget.destroy()
 
-            # Defind the questions for each type of options
+            # Create the questions for each type of marriage status options
             if selected_option == "Single":
 
                 tk.Label(frame, text="Own Father-Mother Exemption", font=MEDIUMFONT).place(x=30, y=160)    
@@ -270,7 +265,7 @@ class Ex(CommonFrame):
                 tk.Label(frame, text="Number of children born after 2018", font=MEDIUMFONT).place(x=360, y=310)
                 self.children_after_2 = ttk.Entry(self)
                 self.children_after_2.place(x=360, y=330)
-
+                
                 self.dropdown_parents = dropdown_parents(frame, 30, 190)
                 self.dropdown_parents_spouse = dropdown_parents(frame, 30, 330)
                 self.dropdown_children = dropdown_children(frame, 360, 190)
@@ -278,7 +273,8 @@ class Ex(CommonFrame):
                 self.dropdown_incompetent_spouse = dropdown_incompetent(frame, 30, 400)
 
     def getdata(self):
-
+        
+        # Get the value from different type of selected options
         if Data.marriage_status == "Single":
             Data.dropdown_parents = str(self.dropdown_parents.get())
             Data.dropdown_incompetent = str(self.dropdown_incompetent.get())
@@ -309,6 +305,7 @@ class Ex(CommonFrame):
             Data.children_before_2 = int(self.children_before_2.get())
             Data.children_after_2 = int(self.children_after_2.get())
 
+# Page Provide Fund
 class PVD(CommonFrame):
 
     def __init__(self, parent, controller):
@@ -339,6 +336,7 @@ class PVD(CommonFrame):
         Data.social_security = int(self.social_security_entry.get())
         Data.interest_house = int(self.interest_house_entry.get())
 
+# Page Insurance
 class Insurance(CommonFrame):
 
     def __init__(self, parent, controller):
@@ -383,6 +381,7 @@ class Insurance(CommonFrame):
         Data.health_ip_parents = int(self.health_ip_parents_entry.get())
         Data.pension_life_ip = int(self.pension_life_ip_entry.get())
 
+# Page Other Funds
 class OtherFunds(CommonFrame):
 
     def __init__(self, parent, controller):
@@ -415,6 +414,7 @@ class OtherFunds(CommonFrame):
         Data.nsf = int(self.nsf_entry.get())
         Data.ptf = int(self.ptf_entry.get())
 
+# Page Total Tax Payment
 class Result(CommonFrame):
 
     def __init__(self, parent, controller):
@@ -427,15 +427,18 @@ class Result(CommonFrame):
         ttk.Button(self, text="Back", command=lambda: controller.show_frame(OtherFunds)).place(x=220, y=430)
         ttk.Button(self, text="Home", command=lambda: controller.show_frame(Income)).place(x=330, y=430)
 
+    # Calculate the tax payment from the collected data
     def update_data(self):
-        
+
+        # Define the value from different types of parents exemption dropdown options
         if Data.dropdown_parents == "No Exemption":
                 num_p = 0
         elif Data.dropdown_parents == "Father Exemption" or Data.dropdown_parents == "Mother Exemption":
             num_p = 1
         elif Data.dropdown_parents == "Father and Mother Exemption":
             num_p = 2
-    
+
+        # Define the value from different types of incompetent support dropdown options
         if Data.dropdown_incompetent == "0":
             num_i = 0
         elif Data.dropdown_incompetent == "1":
@@ -445,6 +448,7 @@ class Result(CommonFrame):
         elif Data.dropdown_incompetent == "3":
             num_i = 3
 
+        # Define the value from different types of spouse parents exemption dropdown options
         if Data.dropdown_parents_spouse == "No Exemption":
             num_p_s = 0
         elif Data.dropdown_parents_spouse == "Father Exemption" or Data.dropdown_parents_spouse == "Mother Exemption":
@@ -452,7 +456,7 @@ class Result(CommonFrame):
         elif Data.dropdown_parents_spouse == "Father and Mother Exemption":
             num_p_s = 2
         
-    
+        # Define the value from different types of spouse incompetent support dropdown options
         if Data.dropdown_incompetent_spouse == "0":
             num_i_s = 0
         elif Data.dropdown_incompetent_spouse == "1":
@@ -462,11 +466,11 @@ class Result(CommonFrame):
         elif Data.dropdown_incompetent_spouse == "3":
             num_i_s = 3
 
+        # Define the value from different types of the first child dropdown options
         if Data.dropdown_children == "No":
             num_c = 0
             num_c_b = num_c_b1 = num_c_b2 = 0
             num_c_a = num_c_a1 = num_c_a2 = 0
-
         elif Data.dropdown_children == "Yes":
             num_c = 1
             num_c_b = Data.children_before
@@ -476,6 +480,7 @@ class Result(CommonFrame):
             num_c_b2 = Data.children_before_2
             num_c_a2 = Data.children_after_2
 
+        # Create the net income fomula and calculate
         if Data.marriage_status == "Single":
             exemption = 60000 + (30000*num_p) + (60000*num_i) + Data.pvd + Data.social_security + Data.interest_house + Data.life_ip + Data.health_ip + Data.health_ip_parents + Data.pension_life_ip + Data.gpf + Data.nsf + Data.ptf
             income = Data.salary*12 + Data.bonus + Data.other_income
@@ -496,7 +501,7 @@ class Result(CommonFrame):
             income = Data.salary*12 + Data.bonus + Data.other_income
             net_income = income - exemption
 
-
+        # Calculate the total tax payment
         if net_income < 150000 and Data.other_income*12 < 60000:
             tax = 0
         elif 150000 <= net_income <= 300000:
@@ -514,6 +519,7 @@ class Result(CommonFrame):
         elif net_income > 5000000:
             tax = ((net_income - 5000000)*0.35)+126500
 
+        # Show the result
         ttk.Label(self, text="The Total Tax Payment", font=HUGEFONT).place(x=210, y=190)
         tk.Label(self, text=tax, font=HUGEFONT, bg="light blue", fg="black").place(x=240, y=250)
         ttk.Label(self, text="Bath", font=HUGEFONT).place(x=340, y=252)
