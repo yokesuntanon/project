@@ -1,6 +1,2 @@
 # project
-Final Project for Introduction to Programming
-
-... A brief description of how my program works ...
-
-:)
+Final Project for Introduction to Programming "Tax Calculator Application"
